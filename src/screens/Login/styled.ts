@@ -45,6 +45,6 @@ export default {
     padding: 0 24px;
   `, 
   BoxComponentImages: styled.View`
-    margin-top: ${RFPercentage(9)}px;
+    margin-top: ${RFPercentage(8.5)}px;
   `,   
 }
