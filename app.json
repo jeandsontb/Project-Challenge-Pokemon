@@ -1,0 +1,12 @@
+{
+  "name": "brisanet",
+  "displayName": "brisanet",
+  "expo": {
+    "name": "brisanet",
+    "slug": "brisanet",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
