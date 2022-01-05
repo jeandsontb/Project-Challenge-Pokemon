@@ -8,9 +8,10 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
+import { NavigationContainer } from '@react-navigation/native';
 
-import { Login } from './src/screens/Login';
 import theme from './src/styles/theme';
+import { AppRoutes } from './src/routes/app.routes';
 
 export default function App() {
 
@@ -27,7 +28,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Login />
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
