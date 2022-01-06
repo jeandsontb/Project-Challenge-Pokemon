@@ -7,7 +7,7 @@ import { AppLogin } from "./app.routes";
 const Routes = () => {
   return (
     <NavigationContainer>
-      <AppHome />
+      <AppLogin />
     </NavigationContainer>
   );
 }

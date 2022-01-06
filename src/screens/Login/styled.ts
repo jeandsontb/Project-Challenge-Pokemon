@@ -40,11 +40,11 @@ export default {
   `,
   BoxButton: styled.View`
     width: 100%;
-    margin-top: 9px;
+    margin-top: -21px;
     height: 80px;
     padding: 0 24px;
   `, 
   BoxComponentImages: styled.View`
-    margin-top: ${RFPercentage(8.5)}px;
+    margin-top: ${RFPercentage(12)}px;
   `,   
 }
