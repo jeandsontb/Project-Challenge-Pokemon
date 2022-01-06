@@ -21,7 +21,7 @@ const Favorites = () => {
         backgroundColor={theme.colors.status_bar}
       />
       
-      <Menu indicator={indicator} />
+      <Menu indicator={indicator} screenActive={true} />
 
       <S.BoxWarnFavorites>
         <S.BoxImage>

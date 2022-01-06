@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { useTheme } from 'styled-components';
-import JWT from 'expo-jwt';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { 
-  useFocusEffect, 
-  useNavigation, 
-  NavigationProp, 
-  ParamListBase 
-} from '@react-navigation/native';
 
 
 import S from './styled';
@@ -16,56 +8,20 @@ import LogoSvg from '../../assets/logo.svg';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import ImageBackgroundSvg from '../../assets/poke.svg';
-
-interface IDataCredential {
-  email: string;
-  password: string;
-}
+import { useAuth } from '../../hooks/Auth';
 
 const Login = () => {
   const theme = useTheme();
-  const {navigate}: NavigationProp<ParamListBase> = useNavigation();
+  const { signIn } = useAuth();
 
   const [ email, setEmail ] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
-  const [ user, setUser ] = useState<string>('');
-
-  useFocusEffect(() => {
-    const getAccessUser = async () => {
-      const userAccount = await AsyncStorage.getItem('@userAccount:user');
-
-      if(userAccount) {
-        setUser(userAccount);
-      }
-    }
-    getAccessUser();
-  }); 
 
   const handleSignIn = async () => {
-    const key = process.env.KEY_PASS_SIGNIN as string;
-
     if(email.length > 0 && password.length > 0) {
-      if(!user) {
-        const token = JWT.encode({email, password}, key);
-
-        if(token) {
-          await AsyncStorage.setItem('@usertoken:user', token);
-          await AsyncStorage.setItem('@userAccount:user', token);
-          navigate('AllPosts');
-          return;
-        }
-      }
-
-      const userCredential = JWT.decode(user, key) as IDataCredential;
-      if(email === userCredential.email && password === userCredential.password) {        
-        const token = JWT.encode({email, password}, key);
-        await AsyncStorage.setItem('@usertoken:user', token);
-        navigate('AllPosts');
-        return;
-      }
-      Alert.alert('Opsss!', 'Email e ou Senha inválidos!');
+      signIn({email, password});
       return;
-    }    
+    }
     Alert.alert('Opsss!', 'Todos os campos são obrigatórios');
   }
 

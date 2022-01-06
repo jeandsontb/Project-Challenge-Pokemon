@@ -12,7 +12,7 @@ const AllPosts = () => {
 
   return (
     <S.Container>
-      <Menu />
+      <Menu screenActive={true} />
 
       <S.BoxButtonGroup>
         <ButtonsGroup />
