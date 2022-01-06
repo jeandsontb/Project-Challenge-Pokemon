@@ -13,6 +13,7 @@ export default {
     text_light: '#7D7E80',
     text_moon: '#D2D4D6',
     indicator: '#343232',
+    border_search: '#9C9EA1'
   },
   fonts: {
     regular: 'Poppins_400Regular',

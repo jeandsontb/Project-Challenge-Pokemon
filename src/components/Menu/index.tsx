@@ -7,7 +7,7 @@ import S from './styled';
 import LogoHeaderSvg from '../../assets/logoheader.svg';
 
 interface IButtonStyleProps {
-  indicator: number;
+  indicator?: number;
 }
 
 const Menu = ({indicator}: IButtonStyleProps) => {
@@ -25,7 +25,7 @@ const Menu = ({indicator}: IButtonStyleProps) => {
         setFavorite(true);
         setSearch(false);
         setAll(false);
-        navigate('Home');
+        navigate('Favorites');
       break;
       case 'search':
         setFavorite(false);
@@ -53,7 +53,7 @@ const Menu = ({indicator}: IButtonStyleProps) => {
         <TouchableWithoutFeedback onPress={() => handleOptionChoiceScreen('favorite')}>
           <S.ButtonFavorite>
             <S.TextFavorite active={favorite} >Favoritos</S.TextFavorite>
-            {indicator > 0 &&
+            {indicator !== undefined && indicator > 0 &&
               <S.BoxIndicator>
                 <S.TextIndicator>
                   {indicator}
