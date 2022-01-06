@@ -11,7 +11,8 @@ export default {
     button_theme: '#4D4D4E',
     text: '#1E1E1F',
     text_light: '#7D7E80',
-    indicator: '#343232'
+    text_moon: '#D2D4D6',
+    indicator: '#343232',
   },
   fonts: {
     regular: 'Poppins_400Regular',

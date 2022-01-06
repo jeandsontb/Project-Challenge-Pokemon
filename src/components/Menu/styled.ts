@@ -8,7 +8,6 @@ interface IProps {
 
 export default {
   Container: styled.View`
-    flex: 1;
     background-color: ${({theme}) => theme.colors.background_primary};
   `,
   BoxTitle: styled.View`
@@ -23,6 +22,7 @@ export default {
     width: 100%;
     align-items: center;
     justify-content: space-around;
+    background-color: ${({theme}) => theme.colors.background_light};
   `,
   ButtonFavorite: styled(RectButton)`
     padding: 15px;
