@@ -3,7 +3,13 @@ import { Alert, Platform } from 'react-native';
 import { useTheme } from 'styled-components';
 import JWT from 'expo-jwt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
+import { 
+  useFocusEffect, 
+  useNavigation, 
+  NavigationProp, 
+  ParamListBase 
+} from '@react-navigation/native';
+
 
 import S from './styled';
 import LogoSvg from '../../assets/logo.svg';
@@ -18,6 +24,7 @@ interface IDataCredential {
 
 const Login = () => {
   const theme = useTheme();
+  const {navigate}: NavigationProp<ParamListBase> = useNavigation();
 
   const [ email, setEmail ] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
@@ -44,6 +51,7 @@ const Login = () => {
         if(token) {
           await AsyncStorage.setItem('@usertoken:user', token);
           await AsyncStorage.setItem('@userAccount:user', token);
+          navigate('AllPosts');
           return;
         }
       }
@@ -52,6 +60,7 @@ const Login = () => {
       if(email === userCredential.email && password === userCredential.password) {        
         const token = JWT.encode({email, password}, key);
         await AsyncStorage.setItem('@usertoken:user', token);
+        navigate('AllPosts');
         return;
       }
       Alert.alert('Opsss!', 'Email e ou Senha inválidos!');
