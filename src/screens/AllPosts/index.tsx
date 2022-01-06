@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
+import { ButtonsGroup } from '../../components/ButtonsGroup';
 
 import { Menu } from '../../components/Menu';
 
@@ -14,7 +15,7 @@ const AllPosts = () => {
       <Menu />
 
       <S.BoxButtonGroup>
-        
+        <ButtonsGroup />
       </S.BoxButtonGroup>
     </S.Container>
   );
