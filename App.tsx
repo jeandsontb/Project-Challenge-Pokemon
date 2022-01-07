@@ -11,7 +11,9 @@ import {
 
 import { AuthProvider } from './src/hooks/Auth';
 import theme from './src/styles/theme';
+import themeNight from './src/styles/themeNight';
 import { Routes } from './src/routes';
+import { ThemeProviderFolks } from './src/hooks/Theme';
 
 export default function App() {
 
@@ -30,7 +32,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
 
       <AuthProvider>
-        <Routes />
+        <ThemeProviderFolks>
+          <Routes />
+        </ThemeProviderFolks>
       </AuthProvider>
 
     </ThemeProvider>
