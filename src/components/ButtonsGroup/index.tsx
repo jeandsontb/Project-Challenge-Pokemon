@@ -16,7 +16,6 @@ const ButtonsGroup = () => {
     let vectorOptButtons = [...optionsButtons];
     let buttonsAction = optionsButtons.filter(action => action.active !== false);
     setOptionsButtons([]);
-    console.log(buttonsAction[0])
     
     if(buttonsAction[0].id !== id) {
       vectorOptButtons[id].active = true;

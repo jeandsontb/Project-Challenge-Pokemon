@@ -13,7 +13,7 @@ const Search = () => {
 
   return (
     <S.Container>
-      <Menu screenActive={false} />
+      <Menu screenActive='search' />
 
       <S.BoxContent>
         <S.BoxSearch>

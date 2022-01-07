@@ -3,7 +3,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IProps {
-  active: boolean;
+  active: 'all' | 'favorites' | 'search';
 }
 
 export default {
@@ -31,8 +31,8 @@ export default {
   `,
   TextFavorite: styled.Text<IProps>`
     font-family: ${({theme, active}) => 
-      active ? theme.fonts.semi_bold : theme.fonts.regular};
-    border-bottom-width: ${({active}) => active ? 2 : 0}px;
+      active === 'favorites' ? theme.fonts.semi_bold : theme.fonts.regular};
+    border-bottom-width: ${({active}) => active === 'favorites' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
   `,
@@ -55,8 +55,8 @@ export default {
   `,
   TextSearch: styled.Text<IProps>`
     font-family: ${({theme, active}) => 
-      active ? theme.fonts.semi_bold : theme.fonts.regular};
-    border-bottom-width: ${({active}) => active ? 2 : 0}px;
+      active === 'search' ? theme.fonts.semi_bold : theme.fonts.regular};
+    border-bottom-width: ${({active}) => active === 'search' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
   `,
@@ -65,8 +65,8 @@ export default {
   `,
   TextAllPosts: styled.Text<IProps>`
     font-family: ${({theme, active}) => 
-      active ? theme.fonts.semi_bold : theme.fonts.regular};
-    border-bottom-width: ${({active}) => active ? 2 : 0}px;
+      active === 'all' ? theme.fonts.semi_bold : theme.fonts.regular};
+    border-bottom-width: ${({active}) => active === 'all' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
   `,

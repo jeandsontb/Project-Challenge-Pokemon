@@ -1,6 +1,9 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
+import { ButtonLogout } from '../../components/ButtonLogout';
 import { ButtonsGroup } from '../../components/ButtonsGroup';
+import { ButtonTheme } from '../../components/ButtonTheme';
+import { Cards } from '../../components/Cards';
 
 import { Menu } from '../../components/Menu';
 
@@ -12,11 +15,21 @@ const AllPosts = () => {
 
   return (
     <S.Container>
-      <Menu screenActive={true} />
+      <Menu screenActive='all' />
 
       <S.BoxButtonGroup>
         <ButtonsGroup />
       </S.BoxButtonGroup>
+
+      <S.BoxCards>
+        <S.ScrollCards>
+          <Cards />
+        </S.ScrollCards>
+      </S.BoxCards>
+
+      <ButtonTheme />
+
+      <ButtonLogout />
     </S.Container>
   );
 }

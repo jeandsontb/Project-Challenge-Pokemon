@@ -11,6 +11,7 @@ interface IButtonProps extends TouchableWithoutFeedbackProps {
   color?: string;
   font?: string;
   fontSize?: number;
+  padding?: number;
   onPress: () => void;
 }
 
@@ -22,13 +23,14 @@ const Button = ({
   color,
   font,
   fontSize,
+  padding,
   onPress, 
   ...rest
 }: IButtonProps) => {
   return (
     <S.BoxDetailsButton border={border} borderColor={borderColor} >
       <TouchableWithoutFeedback onPress={onPress}>
-          <S.Button {...rest} background={background} >
+          <S.Button {...rest} background={background} padding={padding} >
             <S.TextTitleButton color={color} font={font} fontSize={fontSize} >
               {title}
             </S.TextTitleButton>

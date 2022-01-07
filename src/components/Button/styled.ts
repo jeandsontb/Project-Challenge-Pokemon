@@ -9,6 +9,7 @@ interface IComponentProps {
 
 interface IButtonRecProps {
   background?: string;
+  padding?: number;
 }
 
 interface IFontProps {
@@ -31,7 +32,8 @@ export default {
     width: 100%;
     border-radius: 8px;
     align-items: center;
-    padding: 15px 0;
+    padding-top: ${({padding}) => padding ? padding : 15}px;
+    padding-bottom: ${({padding}) => padding ? padding : 15}px;
   `,
   TextTitleButton: styled.Text<IFontProps>`
     font-family: ${({theme, font}) => font ? font : theme.fonts.medium};

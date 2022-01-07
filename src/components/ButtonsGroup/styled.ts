@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 interface IButtonProps {
   active: boolean;
@@ -13,11 +14,12 @@ export default {
     width: 100%;
   `,
   BoxButton: styled.View<IButtonProps>`
-    width: 140px;
-    border: ${({active}) => active ? 0 : 1}px;
-    border-color: ${({theme}) => theme.colors.text};
+    width: ${RFPercentage(18)}px;
+    border: 1px;
+    border-color: ${({theme, active}) => 
+      active ? theme.colors.button_primary : theme.colors.text};
     border-radius: 8px;
-    margin-top: 16px;
+    margin-top: 20px;
     overflow: hidden;
   `,
   ButtonChoiceListPokem: styled(RectButton)<IButtonProps>`

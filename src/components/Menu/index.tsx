@@ -1,22 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { useNavigation, NavigationProp, ParamListBase, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
 
 import S from './styled';
 import LogoHeaderSvg from '../../assets/logoheader.svg';
 
 interface IButtonStyleProps {
   indicator?: number;
-  screenActive: boolean;
+  screenActive: 'all' | 'favorites' | 'search';
 }
 
 const Menu = ({indicator, screenActive}: IButtonStyleProps) => {
 
   const {navigate}: NavigationProp<ParamListBase> = useNavigation();
-
-  const [favorite, setFavorite] = useState(false);
-  const [search, setSearch] = useState(false);
-  const [all, setAll] = useState(false);
 
   return (
     <S.Container>
