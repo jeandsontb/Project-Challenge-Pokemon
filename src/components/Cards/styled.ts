@@ -11,7 +11,8 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    margin-top: 12px;
+    margin-bottom: 30px;
+
   `,
   BoxCard: styled.View`
     width: 154px;
@@ -19,7 +20,6 @@ export default {
     background-color: ${({theme}) => theme.colors.background_light} ;
     border-radius: 8px;
     overflow: hidden;
-    margin: 10px 0;
   `,
   BoxImagePoke: styled.View`
     position: relative;

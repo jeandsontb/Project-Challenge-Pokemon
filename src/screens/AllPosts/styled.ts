@@ -1,4 +1,6 @@
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
+import { FlatList, FlatListProps } from 'react-native';
+import { IPokemonsDto } from '../../Dtos/Pokemons';
 
 export default {
   Container: styled.View`
@@ -11,14 +13,12 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
   `,
-  BoxCards: styled.View`
-    flex: 1;
-    margin-top: 20px;
-    margin-bottom: 80px;
-  `,
-  ScrollCards:styled.ScrollView`
+  BoxCardButtons: styled.View`
     width: 100%;
-    height: 100%;
+    height: 70px;
   `,
-  ListCards: styled.FlatList``,
+  ListCards: styled(FlatList as new 
+    (props: FlatListProps<IPokemonsDto>) => FlatList<IPokemonsDto>).attrs({
+      showsVerticalScrollIndicator: false,
+  })``,
 }

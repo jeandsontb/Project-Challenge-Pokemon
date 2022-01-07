@@ -1,44 +1,46 @@
-import React, {useState, useEffect} from 'react'; 
+import React, { useEffect, useState } from 'react'; 
+
 import { ButtonLogout } from '../../components/ButtonLogout';
 import { ButtonsGroup } from '../../components/ButtonsGroup';
 import { ButtonTheme } from '../../components/ButtonTheme';
 import { Cards } from '../../components/Cards';
 
 import { Menu } from '../../components/Menu';
-import { listPokemon } from '../../services/resources/poke';
+import { getOnePokemon, listPokemon } from '../../services/resources/poke';
+import { IPokemonsDto } from '../../Dtos/Pokemons';
 
 import S from './styled';
 
-interface IListPokemonsData {
-  name: string;
-  url: string;
-}
-
 const AllPosts = () => {
 
-  const [ listPokemons, setListPokemons ] = useState<IListPokemonsData[]>([]);
+  const [ pokemonData, setPokemonData ] = useState<IPokemonsDto[]>([]);
+  const [ pokemonCard, setPokemonCard ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const getPokemonList = async () => {
-      const response = await listPokemon(20, 0);
-      
-      if(response) {
-        let data: IListPokemonsData[] = response.map(data => {
-          return {
-            name: data.name,
-            url: data.url
-          }
-        });
+      try {
+        const response = await listPokemon(6, 0);
+        const { results } = await listPokemon(1, 0);
+        
+        
+        
+        
 
-        setListPokemons(data);
-      }
-            
+        console.log(results);
+
+
+
+
+        setPokemonData(response.results); 
+        setLoading(false);
+      } catch(error) {
+        console.log(error);
+      }           
     }
 
     getPokemonList();
   }, []);
-
-  console.log(listPokemon);
 
   return (
     <S.Container>
@@ -48,11 +50,21 @@ const AllPosts = () => {
         <ButtonsGroup />
       </S.BoxButtonGroup>
 
-      <S.BoxCards>
-        <S.ScrollCards>
-          <Cards />
-        </S.ScrollCards>
-      </S.BoxCards>
+      
+      <S.ListCards 
+        data={pokemonData}
+        keyExtractor={item => item.name}
+        renderItem={({item}) => <Cards data={item} />}
+        numColumns={2}
+        style={{ 
+          flex: 1,
+          padding: 24,
+          marginTop: 20,
+        }}
+      />
+
+
+      <S.BoxCardButtons />
 
       <ButtonTheme />
 

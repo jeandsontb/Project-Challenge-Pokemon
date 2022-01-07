@@ -30,5 +30,7 @@ export default {
     background-color: ${({theme, active}) => 
       active ? theme.colors.button_primary : theme.colors.background_light};
   `,
-  TextButtonChoice: styled.Text``,
+  TextButtonChoice: styled.Text`
+    font-family: ${({theme}) => theme.fonts.medium};
+  `,
 }
