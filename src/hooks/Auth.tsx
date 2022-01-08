@@ -37,8 +37,8 @@ const AuthProvider = ({children}: AuthProviderProps) => {
       if(tokenVerifyActive && userVerifyActive) {
         let userVerifyCredentials = await JSON.parse(userVerifyActive) as IUser;
         setUser(userVerifyCredentials.email);
-
-        setToken(tokenVerifyActive);
+        
+        setToken(tokenVerifyActive);        
       }
     }
 

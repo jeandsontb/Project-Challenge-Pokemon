@@ -1,6 +1,4 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { IPokemonCardDto } from '../Dtos/Pokemons';
 import { getOnePokemon, listPokemon } from '../services/resources/poke';
@@ -13,8 +11,6 @@ interface IContextData {
   pokemonCard: IPokemonCardDto[];
   loading: boolean;
   searchNewsPokemons: () => void;
-  // signIn: ({email, password}: IUser) => void;
-  // signOut: () => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
@@ -23,41 +19,67 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
 
   const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
   const [ loading, setLoading ] = useState(true);
-  const [ offset, setOffset ] = useState(0)
+  const [ offset, setOffset ] = useState(0);
+  const [ limit, setLimit ] = useState(20);
 
   useEffect(() => {
-    setLoading(true);
     getPokemonCard();
-  }, []);
-
+  }, [offset]);
+  
   const getPokemonCard = async () => {
     try {
-      const { results } = await listPokemon(20, 0);
+      setLoading(true);
+      const loadPokemon = await listPokemon(limit, offset);
+      if(loadPokemon) {
+        let geraObj: IPokemonCardDto[] = [];
+        let count = 1;
+        loadPokemon.results.forEach(async (data: {name: string, url: string}) => {
+          const result = await getPokemonDataDetails(data);
+          if(result) {
+            geraObj.push(result);
+            count++;
 
-      const getPokemonList = results.map(async(item: { name: string; }) => {
-        const data = await getOnePokemon(item.name)
-         return {
-           id: data.id,
-           name: data.name,
-           image: data.sprites.front_default,
-           type: data.types[0].type.name,
-           favorite: false
-         };
-       });
+            if(count > limit) {
+              populateObjPokemon();
+            }
+          }          
+        });
 
-      const pokemonList = await Promise.all(getPokemonList);
-
-      setLoading(false);
-      setPokemonCard([...pokemonCard, ...pokemonList]);
-
-    } catch(error) {
+        const populateObjPokemon = async () => {
+          setPokemonCard(geraObj);
+          setLoading(false);
+        }
+      }
+    } catch (error) {
       console.log(error);
-    } 
+    }
   }
 
+  const getPokemonDataDetails = async (pokemon: {name: string, url: string}) => {
+    const pokemonData = await getOnePokemon(pokemon.name);
+    if( pokemonData ) {     
+      
+      let pokemonTypes: string[] = [];
+      pokemonData.types.forEach((types: { type: { name: string; }; }) => {
+        pokemonTypes.push(types.type.name);
+      });
+      const objPokemon: IPokemonCardDto = {
+        id: pokemonData.id,
+        name: pokemonData.name,
+        image: pokemonData.sprites.front_default,
+        favorite: false,
+        type: pokemonTypes
+      }
+      
+      return objPokemon;
+    }
+  }  
 
   const searchNewsPokemons = () => {
-    
+    setLoading(true);
+    if(!loading) {
+      setOffset(offset + 20);      
+    }
   }
 
   return (

@@ -9,15 +9,13 @@ const Cards = ({data}: any) => {
 
   const theme = useTheme();
 
-  const [ favorite, setFavorite ] = useState(false);
-
   return (
     <S.Container>
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
           <S.ImagePoke source={{uri: data.image}} />          
           <S.BoxFavorite>
-          {favorite 
+          {data.favorite
             ? <AntDesign name="heart" size={24} color="red" />
             : <AntDesign name="hearto" size={24} color="black" />
           }          
@@ -30,12 +28,18 @@ const Cards = ({data}: any) => {
           <S.TextId>ID: {data.id}</S.TextId>
 
           <S.BoxInfoSpecialty>
-            <S.BoxSpecialty active={false}>
-              <S.TextSpecialty active={false}>{data.type}</S.TextSpecialty>
-            </S.BoxSpecialty>
-            <S.BoxSpecialty active={true}>
-              <S.TextSpecialty active={true}>Fire</S.TextSpecialty>
-            </S.BoxSpecialty>
+            {data.type && data.type.map((type: boolean, index: number) => {
+              
+              let verify = false;
+              if(index % 2 !== 0) {
+                verify = true;
+              }
+              return (
+                <S.BoxSpecialty active={verify}>
+                  <S.TextSpecialty active={verify}>{type}</S.TextSpecialty>
+                </S.BoxSpecialty>
+              );              
+            })}
           </S.BoxInfoSpecialty>
 
           <S.BoxButton>

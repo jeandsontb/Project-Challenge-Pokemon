@@ -7,6 +7,6 @@ export interface IPokemonCardDto {
   id: number;
   name: string;
   image: string;
-  type: string;
+  type: string[];
   favorite: boolean;
 }[];

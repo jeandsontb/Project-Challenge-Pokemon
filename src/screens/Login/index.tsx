@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Platform, Alert } from 'react-native';
 import { useTheme } from 'styled-components';
 
-
 import S from './styled';
 import LogoSvg from '../../assets/logo.svg';
 import { Input } from '../../components/Input';

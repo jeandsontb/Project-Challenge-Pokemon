@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, {useEffect, useState} from 'react'; 
 import { ActivityIndicator } from 'react-native';
 
 import { ButtonLogout } from '../../components/ButtonLogout';
@@ -8,6 +8,7 @@ import { Cards } from '../../components/Cards';
 import { useTheme } from 'styled-components';
 import { Menu } from '../../components/Menu';
 import { usePokemon } from '../../hooks/Pokemon';
+import { IPokemonCardDto } from '../../Dtos/Pokemons';
 
 import S from './styled';
 
@@ -15,6 +16,20 @@ const AllPosts = () => {
 
   const theme = useTheme();
   const { searchNewsPokemons, pokemonCard, loading } = usePokemon();
+
+  const [dataPokemon, setDataPokemon] = useState<IPokemonCardDto[]>([])
+
+  useEffect(() => {
+    loadPokemonData();
+  }, [pokemonCard]);
+
+  const loadPokemonData = () => {
+
+    if(pokemonCard.length > 19) {
+      setDataPokemon([...dataPokemon, ...pokemonCard]);
+    }
+    
+  }
 
   return (
     <S.Container>
@@ -25,8 +40,8 @@ const AllPosts = () => {
       </S.BoxButtonGroup>
       
       <S.ListCards 
-        data={pokemonCard}
-        keyExtractor={item => item.name}
+        data={dataPokemon}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({item}) => 
           <Cards 
           data={item} 
