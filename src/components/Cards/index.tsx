@@ -1,49 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
 import S from './styled';
 import { Button } from '../Button';
-import { getOnePokemon } from '../../services/resources/poke';
 
 const Cards = ({data}: any) => {
 
   const theme = useTheme();
 
-  // useEffect(() => {
-
-  //   const getPokemon = async () => {
-  //     try {
-  //       const response = await getOnePokemon(data.name);
-
-  //       const poke = [
-  //         {
-  //           id: response.id,
-  //           name: response.name,
-  //           url: response.sprites.front_default,
-  //           type: response.types[0].type.name
-  //         }
-  //       ]
-
-  //       // console.log(poke);
-
-
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-
-  //   getPokemon();
-  // }, [data]);
+  const [ favorite, setFavorite ] = useState(false);
 
   return (
     <S.Container>
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
-          <S.ImagePoke source={{uri: data.image}} />
+          <S.ImagePoke source={{uri: data.image}} />          
           <S.BoxFavorite>
-          <AntDesign name="hearto" size={24} color="black" />
-          <AntDesign name="heart" size={24} color="red" />
+          {favorite 
+            ? <AntDesign name="heart" size={24} color="red" />
+            : <AntDesign name="hearto" size={24} color="black" />
+
+          }          
+          
           </S.BoxFavorite>
         </S.BoxImagePoke>
 

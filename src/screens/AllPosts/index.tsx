@@ -23,11 +23,11 @@ const AllPosts = () => {
   useEffect(() => {
     setLoading(true);
     getPokemonCard();
-  }, [offset]);
+  }, []);
 
   const getPokemonCard = async () => {
     try {
-      const { results } = await listPokemon(10, offset);
+      const { results } = await listPokemon(20, 0);
 
       const getPokemonList = results.map(async(item: { name: string; }) => {
         const data = await getOnePokemon(item.name)
@@ -50,8 +50,7 @@ const AllPosts = () => {
   }
 
   const handleLoadingNewsPokemons = () => {
-    setOffset(offset + 1);
-    console.log('chegou aqui')
+    
   }
 
   console.log(offset);

@@ -25,15 +25,13 @@ O layout foi desenvolvido pela equipe Brisanet,
 ### Mobile
 
 <p align="center">
-  <img alt="Barber" title="#Pikachu" src="" width="200px">
+  <img alt="Barber" title="#Pikachu" src="https://raw.githubusercontent.com/jeandsontb/Project-Challenge-Pokemon/main/screen/Screenshot_20220107-215323_Expo%20Go.jpg" width="200px">
 
-  <img alt="Barber" title="#Pikachu" src="" width="200px">
+  <img alt="Barber" title="#Pikachu" src="https://raw.githubusercontent.com/jeandsontb/Project-Challenge-Pokemon/main/screen/Screenshot_20220107-215340_Expo%20Go.jpg" width="200px">
 
-  <img alt="Barber" title="#Pikachu" src="" width="200px">
+  <img alt="Barber" title="#Pikachu" src="https://raw.githubusercontent.com/jeandsontb/Project-Challenge-Pokemon/main/screen/Screenshot_20220107-215346_Expo%20Go.jpg" width="200px">
 
-  <img alt="Barber" title="#Pikachu" src="" width="200px">
-
-  <img alt="Barber" title="#Pikachu" src="" width="200px">
+  <img alt="Barber" title="#Pikachu" src="https://raw.githubusercontent.com/jeandsontb/Project-Challenge-Pokemon/main/screen/Screenshot_20220107-215354_Expo%20Go.jpg" width="200px">
 </p>
 
 ## 🛠 Tecnologias
