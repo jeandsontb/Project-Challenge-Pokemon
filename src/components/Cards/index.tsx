@@ -10,37 +10,37 @@ const Cards = ({data}: any) => {
 
   const theme = useTheme();
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const getPokemon = async () => {
-      try {
-        const response = await getOnePokemon(data.name);
+  //   const getPokemon = async () => {
+  //     try {
+  //       const response = await getOnePokemon(data.name);
 
-        const poke = [
-          {
-            id: response.id,
-            name: response.name,
-            url: response.sprites.front_default,
-            type: response.types[0].type.name
-          }
-        ]
+  //       const poke = [
+  //         {
+  //           id: response.id,
+  //           name: response.name,
+  //           url: response.sprites.front_default,
+  //           type: response.types[0].type.name
+  //         }
+  //       ]
 
-        // console.log(poke);
+  //       // console.log(poke);
 
 
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
 
-    getPokemon();
-  }, [data]);
+  //   getPokemon();
+  // }, [data]);
 
   return (
     <S.Container>
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
-          <S.ImagePoke source={{uri: 'https://i.pinimg.com/originals/9a/7b/a2/9a7ba23f62d913cc4e0c8e590b50995c.png'}} />
+          <S.ImagePoke source={{uri: data.image}} />
           <S.BoxFavorite>
           <AntDesign name="hearto" size={24} color="black" />
           <AntDesign name="heart" size={24} color="red" />
@@ -48,12 +48,12 @@ const Cards = ({data}: any) => {
         </S.BoxImagePoke>
 
         <S.BoxInfoCard>
-          <S.TextTitle>Pikachu</S.TextTitle>
-          <S.TextId>ID: 101</S.TextId>
+          <S.TextTitle>{data.name}</S.TextTitle>
+          <S.TextId>ID: {data.id}</S.TextId>
 
           <S.BoxInfoSpecialty>
             <S.BoxSpecialty active={false}>
-              <S.TextSpecialty active={false}>Elétrico</S.TextSpecialty>
+              <S.TextSpecialty active={false}>{data.type}</S.TextSpecialty>
             </S.BoxSpecialty>
             <S.BoxSpecialty active={true}>
               <S.TextSpecialty active={true}>Fire</S.TextSpecialty>

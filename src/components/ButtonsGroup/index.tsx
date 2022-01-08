@@ -6,9 +6,9 @@ import S from './styled';
 const ButtonsGroup = () => {
 
   const [optionsButtons, setOptionsButtons] = useState([
-    {id:0, active: true, title: 'Total'},
+    {id:0, active: true, title: 'Todos'},
     {id:1, active: false, title: 'Fire'},
-    {id:2, active: false, title: 'Eletric'},
+    {id:2, active: false, title: 'Electric'},
     {id:3, active: false, title: 'Water'}
   ]);
 

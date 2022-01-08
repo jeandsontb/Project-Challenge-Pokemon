@@ -1,47 +1,60 @@
 import React, { useEffect, useState } from 'react'; 
+import { ActivityIndicator } from 'react-native';
 
 import { ButtonLogout } from '../../components/ButtonLogout';
 import { ButtonsGroup } from '../../components/ButtonsGroup';
 import { ButtonTheme } from '../../components/ButtonTheme';
 import { Cards } from '../../components/Cards';
-
+import { useTheme } from 'styled-components';
 import { Menu } from '../../components/Menu';
 import { getOnePokemon, listPokemon } from '../../services/resources/poke';
-import { IPokemonsDto } from '../../Dtos/Pokemons';
+import { IPokemonCardDto } from '../../Dtos/Pokemons';
 
 import S from './styled';
 
 const AllPosts = () => {
 
-  const [ pokemonData, setPokemonData ] = useState<IPokemonsDto[]>([]);
-  const [ pokemonCard, setPokemonCard ] = useState([]);
+  const theme = useTheme();
+  
+  const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
   const [ loading, setLoading ] = useState(true);
+  const [ offset, setOffset ] = useState(0)
 
   useEffect(() => {
-    const getPokemonList = async () => {
-      try {
-        const response = await listPokemon(6, 0);
-        const { results } = await listPokemon(1, 0);
-        
-        
-        
-        
+    setLoading(true);
+    getPokemonCard();
+  }, [offset]);
 
-        console.log(results);
+  const getPokemonCard = async () => {
+    try {
+      const { results } = await listPokemon(10, offset);
 
+      const getPokemonList = results.map(async(item: { name: string; }) => {
+        const data = await getOnePokemon(item.name)
+         return {
+           id: data.id,
+           name: data.name,
+           image: data.sprites.front_default,
+           type: data.types[0].type.name
+         };
+       });
 
+      const pokemonList = await Promise.all(getPokemonList);
 
+      setLoading(false);
+      setPokemonCard([...pokemonCard, ...pokemonList]);
 
-        setPokemonData(response.results); 
-        setLoading(false);
-      } catch(error) {
-        console.log(error);
-      }           
-    }
+    } catch(error) {
+      console.log(error);
+    } 
+  }
 
-    getPokemonList();
-  }, []);
+  const handleLoadingNewsPokemons = () => {
+    setOffset(offset + 1);
+    console.log('chegou aqui')
+  }
 
+  console.log(offset);
   return (
     <S.Container>
       <Menu screenActive='all' />
@@ -49,13 +62,16 @@ const AllPosts = () => {
       <S.BoxButtonGroup>
         <ButtonsGroup />
       </S.BoxButtonGroup>
-
       
       <S.ListCards 
-        data={pokemonData}
+        data={pokemonCard}
         keyExtractor={item => item.name}
-        renderItem={({item}) => <Cards data={item} />}
+        renderItem={({item}) => 
+          <Cards 
+          data={item} 
+        />}
         numColumns={2}
+        onEndReached={handleLoadingNewsPokemons}
         style={{ 
           flex: 1,
           padding: 24,
@@ -63,6 +79,19 @@ const AllPosts = () => {
         }}
       />
 
+      {loading &&
+        <ActivityIndicator 
+          size='large'
+          color={theme.colors.text}
+          style={{
+            width: '100%', 
+            height: 20, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginTop: 15
+          }}
+        />
+      }
 
       <S.BoxCardButtons />
 

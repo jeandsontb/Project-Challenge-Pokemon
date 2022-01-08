@@ -29,8 +29,8 @@ export default {
     justify-content: center;
   `,
   ImagePoke: styled.Image`
-    width: 52px;
-    height: 56px;
+    width: 72px;
+    height: 76px;
   `,
   BoxFavorite: styled.View`
     position: absolute;
@@ -43,7 +43,7 @@ export default {
   `,
   TextTitle: styled.Text`
     font-family: ${({theme}) => theme.fonts.semi_bold};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(14)}px;
   `,
   TextId: styled.Text`
     color: ${({theme}) => theme.colors.border_search};
