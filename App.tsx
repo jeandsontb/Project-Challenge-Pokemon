@@ -17,6 +17,7 @@ import theme from './src/styles/theme';
 import themeNight from './src/styles/themeNight';
 import { Routes } from './src/routes';
 import { ThemeProviderFolks } from './src/hooks/Theme';
+import { PokemonProvider } from './src/hooks/Pokemon';
 
 export default function App() {
 
@@ -36,7 +37,9 @@ export default function App() {
 
       <AuthProvider>
         <ThemeProviderFolks>
-          <Routes />
+          <PokemonProvider>
+            <Routes />
+          </PokemonProvider>
         </ThemeProviderFolks>
       </AuthProvider>
 

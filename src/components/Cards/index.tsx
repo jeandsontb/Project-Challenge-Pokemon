@@ -20,7 +20,6 @@ const Cards = ({data}: any) => {
           {favorite 
             ? <AntDesign name="heart" size={24} color="red" />
             : <AntDesign name="hearto" size={24} color="black" />
-
           }          
           
           </S.BoxFavorite>

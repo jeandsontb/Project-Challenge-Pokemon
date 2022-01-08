@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React from 'react'; 
 import { ActivityIndicator } from 'react-native';
 
 import { ButtonLogout } from '../../components/ButtonLogout';
@@ -7,53 +7,15 @@ import { ButtonTheme } from '../../components/ButtonTheme';
 import { Cards } from '../../components/Cards';
 import { useTheme } from 'styled-components';
 import { Menu } from '../../components/Menu';
-import { getOnePokemon, listPokemon } from '../../services/resources/poke';
-import { IPokemonCardDto } from '../../Dtos/Pokemons';
+import { usePokemon } from '../../hooks/Pokemon';
 
 import S from './styled';
 
 const AllPosts = () => {
 
   const theme = useTheme();
-  
-  const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
-  const [ loading, setLoading ] = useState(true);
-  const [ offset, setOffset ] = useState(0)
+  const { searchNewsPokemons, pokemonCard, loading } = usePokemon();
 
-  useEffect(() => {
-    setLoading(true);
-    getPokemonCard();
-  }, []);
-
-  const getPokemonCard = async () => {
-    try {
-      const { results } = await listPokemon(20, 0);
-
-      const getPokemonList = results.map(async(item: { name: string; }) => {
-        const data = await getOnePokemon(item.name)
-         return {
-           id: data.id,
-           name: data.name,
-           image: data.sprites.front_default,
-           type: data.types[0].type.name
-         };
-       });
-
-      const pokemonList = await Promise.all(getPokemonList);
-
-      setLoading(false);
-      setPokemonCard([...pokemonCard, ...pokemonList]);
-
-    } catch(error) {
-      console.log(error);
-    } 
-  }
-
-  const handleLoadingNewsPokemons = () => {
-    
-  }
-
-  console.log(offset);
   return (
     <S.Container>
       <Menu screenActive='all' />
@@ -70,7 +32,7 @@ const AllPosts = () => {
           data={item} 
         />}
         numColumns={2}
-        onEndReached={handleLoadingNewsPokemons}
+        onEndReached={searchNewsPokemons}
         style={{ 
           flex: 1,
           padding: 24,
