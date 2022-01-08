@@ -76,7 +76,6 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
   }  
 
   const searchNewsPokemons = () => {
-    setLoading(true);
     if(!loading) {
       setOffset(offset + 20);      
     }

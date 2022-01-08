@@ -17,7 +17,7 @@ const AllPosts = () => {
   const theme = useTheme();
   const { searchNewsPokemons, pokemonCard, loading } = usePokemon();
 
-  const [dataPokemon, setDataPokemon] = useState<IPokemonCardDto[]>([])
+  const [dataPokemon, setDataPokemon] = useState<IPokemonCardDto[]>([]);
 
   useEffect(() => {
     loadPokemonData();
@@ -25,10 +25,9 @@ const AllPosts = () => {
 
   const loadPokemonData = () => {
 
-    if(pokemonCard.length > 19) {
+    if(pokemonCard.length === 20) {
       setDataPokemon([...dataPokemon, ...pokemonCard]);
-    }
-    
+    }    
   }
 
   return (
