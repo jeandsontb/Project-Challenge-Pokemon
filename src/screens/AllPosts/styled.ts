@@ -21,4 +21,9 @@ export default {
     (props: FlatListProps<IPokemonCardDto>) => FlatList<IPokemonCardDto>).attrs({
       showsVerticalScrollIndicator: false,
   })``,
+  BoxLoadingActivity: styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  `,
 }

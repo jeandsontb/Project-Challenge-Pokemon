@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from 'styled-components';
 import { Entypo } from '@expo/vector-icons'; 
+import { useIsFocused } from '@react-navigation/native';
 
 import { Menu } from '../../components/Menu';
 import S from './styled';
 import { ButtonTheme } from '../../components/ButtonTheme';
 import { ButtonLogout } from '../../components/ButtonLogout';
+import { usePokemon } from '../../hooks/Pokemon';
 
 const Search = () => {
 
+  const focused = useIsFocused();
+  const { clearListPokemons } = usePokemon();
   const theme = useTheme();
+
+  useEffect(() => {
+    clearListPokemons();
+  }, [focused]);
 
   return (
     <S.Container>

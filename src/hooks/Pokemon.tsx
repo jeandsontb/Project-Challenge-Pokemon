@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { IPokemonCardDto } from '../Dtos/Pokemons';
 import { getOnePokemon, listPokemon } from '../services/resources/poke';
@@ -11,6 +12,7 @@ interface IContextData {
   pokemonCard: IPokemonCardDto[];
   loading: boolean;
   searchNewsPokemons: () => void;
+  clearListPokemons: () => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
@@ -28,61 +30,57 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
   
   const getPokemonCard = async () => {
     try {
-      setLoading(true);
+      const insertPokemonList: IPokemonCardDto[] = [];
       const loadPokemon = await listPokemon(limit, offset);
       if(loadPokemon) {
-        let geraObj: IPokemonCardDto[] = [];
-        let count = 1;
         loadPokemon.results.forEach(async (data: {name: string, url: string}) => {
           const result = await getPokemonDataDetails(data);
-          if(result) {
-            geraObj.push(result);
-            count++;
+          insertPokemonList.push(result as IPokemonCardDto);
 
-            if(count > limit) {
-              populateObjPokemon();
+            if(insertPokemonList.length === limit) {
+              setPokemonCard(insertPokemonList);
+              setLoading(false);
             }
-          }          
         });
-
-        const populateObjPokemon = async () => {
-          setPokemonCard(geraObj);
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      } 
+    } catch(err) {
+      Alert.alert('Opsss!','Não foi possível realizar essa operação');
+    }  
   }
 
   const getPokemonDataDetails = async (pokemon: {name: string, url: string}) => {
-    const pokemonData = await getOnePokemon(pokemon.name);
-    if( pokemonData ) {     
-      
-      let pokemonTypes: string[] = [];
-      pokemonData.types.forEach((types: { type: { name: string; }; }) => {
-        pokemonTypes.push(types.type.name);
-      });
-      const objPokemon: IPokemonCardDto = {
-        id: pokemonData.id,
-        name: pokemonData.name,
-        image: pokemonData.sprites.front_default,
-        favorite: false,
-        type: pokemonTypes
+    try {
+      const pokemonData = await getOnePokemon(pokemon.name);
+      if( pokemonData ) {  
+        let pokemonTypes: string[] = [];
+        pokemonData.types.forEach((types: { type: { name: string; }; }) => {
+          pokemonTypes.push(types.type.name);
+        });
+        const objPokemon: IPokemonCardDto = {
+          id: pokemonData.id,
+          name: pokemonData.name,
+          image: pokemonData.sprites.front_default,
+          favorite: false,
+          type: pokemonTypes
+        }        
+        return objPokemon;
       }
-      
-      return objPokemon;
+    } catch(err) {
+      Alert.alert('Opsss!', 'Não foi possível realizar essa operação.');
     }
   }  
 
+  const clearListPokemons = () => {
+    setOffset(0);
+  }
+
   const searchNewsPokemons = () => {
-    if(!loading) {
-      setOffset(offset + 20);      
-    }
+    setLoading(true);
+    setOffset(offset + 20);
   }
 
   return (
-    <PokemonContext.Provider value={{ pokemonCard, loading, searchNewsPokemons }} > 
+    <PokemonContext.Provider value={{ pokemonCard, loading, searchNewsPokemons, clearListPokemons }} > 
       { children }
     </PokemonContext.Provider>
   );
