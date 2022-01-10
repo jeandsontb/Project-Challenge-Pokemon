@@ -38,7 +38,8 @@ const AuthProvider = ({children}: AuthProviderProps) => {
         let userVerifyCredentials = await JSON.parse(userVerifyActive) as IUser;
         setUser(userVerifyCredentials.email);
         
-        setToken(tokenVerifyActive);        
+        setToken(tokenVerifyActive);  
+        return;       
       }
     }
 
@@ -73,12 +74,14 @@ const AuthProvider = ({children}: AuthProviderProps) => {
       
       setUser(email);
       setToken(tokenAccount);
+      return;
     }
   }
 
   const signOut = async () => {
     setToken('');
     await AsyncStorage.removeItem(accountToken);
+    return;
   }
 
 

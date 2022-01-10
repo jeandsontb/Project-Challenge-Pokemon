@@ -40,13 +40,23 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
             if(insertPokemonList.length === limit) {
               setPokemonCard(insertPokemonList);
               setLoading(false);
+              return;
             }
         });
       } 
     } catch(err) {
       Alert.alert('Opsss!','Não foi possível realizar essa operação');
+      return;
     }  
   }
+
+  // const setPokemonCardSpecification = async (type: string) => {
+  //   if(type !== 'Todos') {
+  //     setOffset(0);
+  //     setPokemonCard([]);
+  //     return;
+  //   }
+  // }
 
   const getPokemonDataDetails = async (pokemon: {name: string, url: string}) => {
     try {
@@ -67,20 +77,28 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
       }
     } catch(err) {
       Alert.alert('Opsss!', 'Não foi possível realizar essa operação.');
+      return;
     }
   }  
 
   const clearListPokemons = () => {
     setOffset(0);
+    return;
   }
 
   const searchNewsPokemons = () => {
     setLoading(true);
     setOffset(offset + 20);
+    return;
   }
 
   return (
-    <PokemonContext.Provider value={{ pokemonCard, loading, searchNewsPokemons, clearListPokemons }} > 
+    <PokemonContext.Provider value={{ 
+      pokemonCard, 
+      loading, 
+      searchNewsPokemons, 
+      clearListPokemons,
+    }} > 
       { children }
     </PokemonContext.Provider>
   );

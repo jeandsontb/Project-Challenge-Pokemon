@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'; 
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 
@@ -21,10 +21,12 @@ const AllPosts = () => {
   const { searchNewsPokemons, pokemonCard, loading } = usePokemon();
 
   const [dataPokemon, setDataPokemon] = useState<IPokemonCardDto[]>([]);
+  const [filterTypePokemon, setFilterTypePokemon] = useState<IPokemonCardDto[]>([])
   const [loadingData, setLoadingData] = useState(true);
+  const [choiceSearchTypePokemon, setChoiceSearchTypePokemon] = useState(false);
 
   useEffect(() => {
-    loadPokemonData();
+      loadPokemonData();
   }, [focused, pokemonCard]);
   
   const loadPokemonData = () => {
@@ -32,7 +34,36 @@ const AllPosts = () => {
     if(pokemonCard.length === 20) {
       setDataPokemon([...dataPokemon, ...pokemonCard]);
       setLoadingData(false);
+      return;
     }    
+  }
+
+  const setOptionChoiceButton = (title: string) => {
+    if(title !== 'Todos' ) {
+      setLoadingData(true);
+      setChoiceSearchTypePokemon(true);
+      const TypePokemon = dataPokemon.filter(obj => obj.type[0] === title.toLowerCase());
+      setTimeout(() => {
+        if(TypePokemon.length > 0) {
+          setFilterTypePokemon(TypePokemon);
+          setLoadingData(false);
+          return;
+        }
+
+        Alert.alert(
+          `Sem pokemon ${title} nessa lista`,
+          'Você pode carregar mais pokemons na lista Todos.'
+        );
+        setFilterTypePokemon([]);
+        setLoadingData(false);        
+        return;
+      }, 200);
+      return;
+    }
+
+    loadPokemonData();
+    setChoiceSearchTypePokemon(false);
+    return;
   }
 
   return (
@@ -40,7 +71,7 @@ const AllPosts = () => {
       <Menu screenActive='all' />
 
       <S.BoxButtonGroup>
-        <ButtonsGroup />
+        <ButtonsGroup setPokemonCardSpecification={setOptionChoiceButton} />
       </S.BoxButtonGroup>
 
       {loadingData 
@@ -60,15 +91,16 @@ const AllPosts = () => {
           </S.BoxLoadingActivity>
         :
           <S.ListCards 
-            data={dataPokemon}
-            keyExtractor={(item) => {return String(uuid.v4())}}
+            data={choiceSearchTypePokemon ? filterTypePokemon : dataPokemon}
+            keyExtractor={(item) => String(uuid.v4())+item.name}
             numColumns={2}
-            onEndReached={searchNewsPokemons}
+            onEndReached={choiceSearchTypePokemon ? () => {} : searchNewsPokemons}
             onEndReachedThreshold={0.2}
             renderItem={({item}) => 
               <Cards 
-              data={item}
-            />}
+                data={item}
+                key={item.id}
+              />}
             style={{ 
               flex: 1,
               padding: 24,
