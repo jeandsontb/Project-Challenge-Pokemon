@@ -18,3 +18,18 @@ export interface IPokemonCardSearchDto {
   type: string[];
   favorite: boolean;
 };
+
+export interface IPokemonDetail {
+  name: string;
+  id: number;
+  images: {
+    photo: string;
+  }[];
+  height: number;
+  weight: number;
+  types: string[];
+  stats: {
+    name: string;
+    base_stat: number;
+  }[];
+}

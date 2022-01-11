@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
-import { IPokemonCardDto, IPokemonCardSearchDto } from '../Dtos/Pokemons';
-import { getOnePokemon, listPokemon } from '../services/resources/poke';
+import { IPokemonCardDto, IPokemonCardSearchDto, IPokemonDetail } from '../Dtos/Pokemons';
+import { getDetailPokemon, getOnePokemon, listPokemon } from '../services/resources/poke';
 
 interface PokemonProviderProps {
   children: ReactNode;
@@ -13,10 +13,11 @@ interface IContextData {
   loading: boolean;
   dataSearchPokemon: IPokemonCardSearchDto;
   visibleModal: boolean;
+  dataPokemon: IPokemonDetail;
   searchNewsPokemons: () => void;
   clearListPokemons: () => void;
   searchOnePokemon: (name: string) => void;
-  showModalDetail: () => void;
+  showModalDetail: (name: string) => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
@@ -25,6 +26,7 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
 
   const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
   const [ dataSearchPokemon, setDataSearchPokemon ] = useState<IPokemonCardSearchDto>({} as IPokemonCardSearchDto)
+  const [ dataPokemon, setDataPokemon ] = useState<IPokemonDetail>({} as IPokemonDetail);
   const [ loading, setLoading ] = useState(true);
   const [ visibleModal, setVisibleModal ] = useState(false);
   const [ offset, setOffset ] = useState(0);
@@ -101,8 +103,51 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     return;
   }
 
-  const showModalDetail = () => {
-    return setVisibleModal(!visibleModal);
+  const showModalDetail = async (name: string) => {
+    if(name === 'close') {
+        setVisibleModal(false);
+        return;
+    } 
+    
+    let data: IPokemonDetail = {} as IPokemonDetail;
+    const response = await getDetailPokemon(name);
+    if(Object.keys(response).length > 0) {
+      
+      const stats: {name: string, base_stat: number}[] = [];
+      const type: string[] = [];
+      response.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
+        let obj = {
+          name: stat.stat.name,
+          base_stat: stat.base_stat
+        };
+        stats.push(obj);
+        return;
+      });
+
+      response.types.map((obj: { type: { name: string; }; }) => type.push(obj.type.name) );
+
+      data = {
+        id: response.id,
+        name: response.name,        
+        images: [
+          {photo: response.sprites.front_default },
+          {photo: response.sprites.back_shiny },
+          {photo: response.sprites.front_shiny }
+        ],
+        height: response.height,
+        weight: response.weight,
+        types: type,
+        stats: stats,
+      }
+      setDataPokemon(data);
+      setVisibleModal(true);
+      return;
+    }
+    return;
+  }
+
+  const getDetailPokemonSelected = async (name: string) => {
+    
   }
 
   return (
@@ -111,6 +156,7 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
       loading, 
       dataSearchPokemon,
       visibleModal,
+      dataPokemon,
       searchOnePokemon,
       searchNewsPokemons, 
       clearListPokemons,

@@ -13,7 +13,7 @@ const Cards = ({data}: any) => {
   const { showModalDetail } = usePokemon();
 
   const handleShowDetailPokemon = (name: string) => {
-    showModalDetail();
+    showModalDetail(name);
   }
 
   return (

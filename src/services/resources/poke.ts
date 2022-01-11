@@ -14,4 +14,11 @@ const getOnePokemon = async (name: string) => {
   }
 }
 
-export { listPokemon, getOnePokemon };
+const getDetailPokemon = async (name: string) => {
+  const { data } = await api.get(`/pokemon/${name}`);
+  if(data) {
+    return data;
+  }
+}
+
+export { listPokemon, getOnePokemon, getDetailPokemon };
