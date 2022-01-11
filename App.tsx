@@ -12,11 +12,9 @@ import {
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 
-import { AuthProvider } from './src/hooks/Auth';
 import theme from './src/styles/theme';
-import themeNight from './src/styles/themeNight';
+import { AuthProvider } from './src/hooks/Auth';
 import { Routes } from './src/routes';
-import { ThemeProviderFolks } from './src/hooks/Theme';
 import { PokemonProvider } from './src/hooks/Pokemon';
 
 export default function App() {
@@ -32,17 +30,15 @@ export default function App() {
     return <AppLoading />
   }
 
-  return (
-    <ThemeProvider theme={theme}>
+  return (    
 
-      <AuthProvider>
-        <ThemeProviderFolks>
-          <PokemonProvider>
-            <Routes />
-          </PokemonProvider>
-        </ThemeProviderFolks>
-      </AuthProvider>
+    <AuthProvider>
+      <PokemonProvider>
+        <ThemeProvider theme={theme}>
+          <Routes />
+        </ThemeProvider>
+      </PokemonProvider>
+    </AuthProvider>
 
-    </ThemeProvider>
   );
 }

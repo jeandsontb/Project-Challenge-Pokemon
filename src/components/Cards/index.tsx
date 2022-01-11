@@ -4,13 +4,23 @@ import { useTheme } from 'styled-components';
 
 import S from './styled';
 import { Button } from '../Button';
+import { Modal } from '../Modal';
+import { usePokemon } from '../../hooks/Pokemon';
 
 const Cards = ({data}: any) => {
 
   const theme = useTheme();
+  const { showModalDetail } = usePokemon();
+
+  const handleShowDetailPokemon = (name: string) => {
+    showModalDetail();
+  }
 
   return (
     <S.Container>
+
+      <Modal />
+
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
           <S.ImagePoke source={{uri: data.image}} />          
@@ -45,7 +55,7 @@ const Cards = ({data}: any) => {
           <S.BoxButton>
             <Button 
               title="Ver detalhes" 
-              onPress={() => {}} 
+              onPress={() => {handleShowDetailPokemon(data.name)}} 
               font={theme.fonts.medium}
               fontSize={9}
               padding={8}

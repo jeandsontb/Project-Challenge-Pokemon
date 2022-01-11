@@ -5,22 +5,22 @@ interface AuthProviderProps {
 }
 
 interface IContextTheme {
-  status: boolean;
-  night: (option: boolean) => void;
+  statu: boolean;
+  night: (status: boolean) => void;
 } 
 
 const ThemeContext = createContext({} as IContextTheme);
 
 const ThemeProviderFolks = ({children}: AuthProviderProps) => {
 
-  const [ status, setStatus ] = useState(false);
+  const [ statu, setStatus ] = useState(false);
 
-  const night = (option: boolean) => {
-    setStatus(option);
+  const night = (status: boolean) => {
+    setStatus(status);
   }
 
   return (
-    <ThemeContext.Provider value={{ status, night }} > 
+    <ThemeContext.Provider value={{ statu, night }} > 
       { children }
     </ThemeContext.Provider>
   );

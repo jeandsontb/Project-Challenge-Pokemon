@@ -14,8 +14,13 @@ import { Cards } from '../../components/Cards';
 const Search = () => {
 
   const focused = useIsFocused();
-  const { clearListPokemons, searchOnePokemon, dataSearchPokemon } = usePokemon();
   const theme = useTheme();
+  const { 
+    clearListPokemons, 
+    searchOnePokemon, 
+    dataSearchPokemon 
+  } = usePokemon();
+  
 
   const [ searchNamePokemon, setSearchNamePokemon ] = useState('');
   const [ pokemon, setPokemon ] = useState({});

@@ -10,21 +10,16 @@ import S from './styled';
 const ButtonTheme = () => {
 
   const theme = useTheme();
+
   const { night } = useThemeFolks();
 
-  const [ optionTheme, setOptionTheme ] = useState(false);
-
-  const handleChoiceTheme = () => {
-    setOptionTheme(!optionTheme);    
+  const handleChangeTheme = () => {
+    night(true);
   }
-
-  useEffect(() => {
-    night(optionTheme);
-  }, [optionTheme]);
 
   return (
     <S.Container>
-      <TouchableWithoutFeedback onPress={handleChoiceTheme} >
+      <TouchableWithoutFeedback onPress={handleChangeTheme} >
         <S.ButtonLogout >
           <Entypo name="moon" size={20} color={theme.colors.text_moon} />
           <S.TextTitle>Tema escuro</S.TextTitle>

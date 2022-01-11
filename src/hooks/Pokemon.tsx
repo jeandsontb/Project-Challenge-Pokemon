@@ -12,9 +12,11 @@ interface IContextData {
   pokemonCard: IPokemonCardDto[];
   loading: boolean;
   dataSearchPokemon: IPokemonCardSearchDto;
+  visibleModal: boolean;
   searchNewsPokemons: () => void;
   clearListPokemons: () => void;
   searchOnePokemon: (name: string) => void;
+  showModalDetail: () => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
@@ -24,6 +26,7 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
   const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
   const [ dataSearchPokemon, setDataSearchPokemon ] = useState<IPokemonCardSearchDto>({} as IPokemonCardSearchDto)
   const [ loading, setLoading ] = useState(true);
+  const [ visibleModal, setVisibleModal ] = useState(false);
   const [ offset, setOffset ] = useState(0);
   const [ limit, setLimit ] = useState(20);
 
@@ -98,14 +101,20 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     return;
   }
 
+  const showModalDetail = () => {
+    return setVisibleModal(!visibleModal);
+  }
+
   return (
     <PokemonContext.Provider value={{ 
       pokemonCard, 
       loading, 
       dataSearchPokemon,
+      visibleModal,
       searchOnePokemon,
       searchNewsPokemons, 
       clearListPokemons,
+      showModalDetail
     }} > 
       { children }
     </PokemonContext.Provider>
