@@ -2,7 +2,6 @@ import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
 import {
   useFonts,
@@ -12,10 +11,10 @@ import {
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
 
-import theme from './src/styles/theme';
 import { AuthProvider } from './src/hooks/Auth';
-import { Routes } from './src/routes';
 import { PokemonProvider } from './src/hooks/Pokemon';
+import { ThemeProviderFolks } from './src/hooks/Theme';
+import { Routes } from './src/routes';
 
 export default function App() {
 
@@ -33,10 +32,10 @@ export default function App() {
   return (    
 
     <AuthProvider>
-      <PokemonProvider>
-        <ThemeProvider theme={theme}>
+      <PokemonProvider>        
+        <ThemeProviderFolks>
           <Routes />
-        </ThemeProvider>
+        </ThemeProviderFolks>
       </PokemonProvider>
     </AuthProvider>
 

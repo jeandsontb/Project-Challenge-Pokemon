@@ -14,7 +14,7 @@ const ButtonTheme = () => {
   const { night } = useThemeFolks();
 
   const handleChangeTheme = () => {
-    night(true);
+    night();
   }
 
   return (

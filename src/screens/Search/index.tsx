@@ -28,7 +28,7 @@ const Search = () => {
 
   useEffect(() => {
     clearListPokemons();
-    setPokemon({});    
+    setPokemon({});  
   }, [focused]);
 
   useEffect(() => {

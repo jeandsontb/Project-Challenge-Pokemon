@@ -14,7 +14,9 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      { token ? <AppHome /> : <AppLogin /> }
+      <ThemeProvider theme={theme}>
+        { token ? <AppHome /> : <AppLogin /> }
+      </ThemeProvider>
     </NavigationContainer>
   );
 }

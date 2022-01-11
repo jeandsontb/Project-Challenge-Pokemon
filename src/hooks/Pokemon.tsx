@@ -93,6 +93,7 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
   }  
 
   const clearListPokemons = () => {
+    setDataSearchPokemon({} as IPokemonCardSearchDto);
     setOffset(0);
     return;
   }
@@ -111,43 +112,36 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     
     let data: IPokemonDetail = {} as IPokemonDetail;
     const response = await getDetailPokemon(name);
-    if(Object.keys(response).length > 0) {
       
-      const stats: {name: string, base_stat: number}[] = [];
-      const type: string[] = [];
-      response.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
-        let obj = {
-          name: stat.stat.name,
-          base_stat: stat.base_stat
-        };
-        stats.push(obj);
-        return;
-      });
-
-      response.types.map((obj: { type: { name: string; }; }) => type.push(obj.type.name) );
-
-      data = {
-        id: response.id,
-        name: response.name,        
-        images: [
-          {photo: response.sprites.front_default },
-          {photo: response.sprites.back_shiny },
-          {photo: response.sprites.front_shiny }
-        ],
-        height: response.height,
-        weight: response.weight,
-        types: type,
-        stats: stats,
-      }
-      setDataPokemon(data);
-      setVisibleModal(true);
+    const stats: {name: string, base_stat: number}[] = [];
+    const type: string[] = [];
+    response.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
+      let obj = {
+        name: stat.stat.name,
+        base_stat: stat.base_stat
+      };
+      stats.push(obj);
       return;
-    }
-    return;
-  }
+    });
 
-  const getDetailPokemonSelected = async (name: string) => {
-    
+    response.types.map((obj: { type: { name: string; }; }) => type.push(obj.type.name) );
+
+    data = {
+      id: response.id,
+      name: response.name,        
+      images: [
+        {photo: response.sprites.front_default },
+        {photo: response.sprites.back_shiny },
+        {photo: response.sprites.front_shiny }
+      ],
+      height: response.height,
+      weight: response.weight,
+      types: type,
+      stats: stats,
+    }
+    setDataPokemon(data);
+    setVisibleModal(true);
+    return;
   }
 
   return (
