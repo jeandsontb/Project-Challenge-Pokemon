@@ -25,9 +25,11 @@ export default {
     font-size: ${RFValue(14)}px;
     margin-top: 3px;
     font-family: ${({theme}) => theme.fonts.medium};
+    height: 28px
   `, 
   BoxCards: styled.View`
     flex: 1;
+    margin-top: 50px;
   `,
   ScrollCards: styled.ScrollView`
     width: 100%;

@@ -60,8 +60,6 @@ const AllPosts = () => {
       }, 200);
       return;
     }
-
-    loadPokemonData();
     setChoiceSearchTypePokemon(false);
     return;
   }
@@ -92,14 +90,13 @@ const AllPosts = () => {
         :
           <S.ListCards 
             data={choiceSearchTypePokemon ? filterTypePokemon : dataPokemon}
-            keyExtractor={(item) => String(uuid.v4())+item.name}
+            keyExtractor={(item) => uuid.v4().toString()}
             numColumns={2}
             onEndReached={choiceSearchTypePokemon ? () => {} : searchNewsPokemons}
             onEndReachedThreshold={0.2}
             renderItem={({item}) => 
               <Cards 
                 data={item}
-                key={item.id}
               />}
             style={{ 
               flex: 1,

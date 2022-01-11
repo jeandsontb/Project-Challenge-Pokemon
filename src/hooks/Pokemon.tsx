@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
-import { IPokemonCardDto } from '../Dtos/Pokemons';
+import { IPokemonCardDto, IPokemonCardSearchDto } from '../Dtos/Pokemons';
 import { getOnePokemon, listPokemon } from '../services/resources/poke';
 
 interface PokemonProviderProps {
@@ -11,8 +11,10 @@ interface PokemonProviderProps {
 interface IContextData {
   pokemonCard: IPokemonCardDto[];
   loading: boolean;
+  dataSearchPokemon: IPokemonCardSearchDto;
   searchNewsPokemons: () => void;
   clearListPokemons: () => void;
+  searchOnePokemon: (name: string) => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
@@ -20,6 +22,7 @@ const PokemonContext = createContext({} as IContextData);
 const PokemonProvider = ({children}: PokemonProviderProps) => {
 
   const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
+  const [ dataSearchPokemon, setDataSearchPokemon ] = useState<IPokemonCardSearchDto>({} as IPokemonCardSearchDto)
   const [ loading, setLoading ] = useState(true);
   const [ offset, setOffset ] = useState(0);
   const [ limit, setLimit ] = useState(20);
@@ -50,13 +53,15 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     }  
   }
 
-  // const setPokemonCardSpecification = async (type: string) => {
-  //   if(type !== 'Todos') {
-  //     setOffset(0);
-  //     setPokemonCard([]);
-  //     return;
-  //   }
-  // }
+  const searchOnePokemon = async (name: string) => {
+    const objSearch = {name: name.toLowerCase(), url: ''}
+    const dataResponseSearchPokemon = await getPokemonDataDetails(objSearch);
+
+    if(dataResponseSearchPokemon) {
+      setDataSearchPokemon(dataResponseSearchPokemon);
+      return
+    }
+  }
 
   const getPokemonDataDetails = async (pokemon: {name: string, url: string}) => {
     try {
@@ -76,7 +81,8 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
         return objPokemon;
       }
     } catch(err) {
-      Alert.alert('Opsss!', 'Não foi possível realizar essa operação.');
+      Alert.alert('Opsss!', 'Pokémon não encontrado.');
+      setDataSearchPokemon({} as IPokemonCardSearchDto);
       return;
     }
   }  
@@ -96,6 +102,8 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     <PokemonContext.Provider value={{ 
       pokemonCard, 
       loading, 
+      dataSearchPokemon,
+      searchOnePokemon,
       searchNewsPokemons, 
       clearListPokemons,
     }} > 
