@@ -58,16 +58,6 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     }  
   }
 
-  const searchOnePokemon = async (name: string) => {
-    const objSearch = {name: name.toLowerCase(), url: ''}
-    const dataResponseSearchPokemon = await getPokemonDataDetails(objSearch);
-
-    if(dataResponseSearchPokemon) {
-      setDataSearchPokemon(dataResponseSearchPokemon);
-      return
-    }
-  }
-
   const getPokemonDataDetails = async (pokemon: {name: string, url: string}) => {
     try {
       const pokemonData = await getOnePokemon(pokemon.name);
@@ -90,7 +80,17 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
       setDataSearchPokemon({} as IPokemonCardSearchDto);
       return;
     }
-  }  
+  } 
+  
+  const searchOnePokemon = async (name: string) => {
+    const objSearch = {name: name.toLowerCase(), url: ''}
+    const dataResponseSearchPokemon = await getPokemonDataDetails(objSearch);
+
+    if(dataResponseSearchPokemon) {
+      setDataSearchPokemon(dataResponseSearchPokemon);
+      return
+    }
+  }
 
   const clearListPokemons = () => {
     setDataSearchPokemon({} as IPokemonCardSearchDto);
