@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
 import S from './styled';
 import { Button } from '../Button';
 import { Modal } from '../Modal';
-import { usePokemon } from '../../hooks/Pokemon';
+import { IPokemonCardDetail } from '../../Dtos/Pokemons';
 
 const Cards = ({data}: any) => {
 
   const theme = useTheme();
-  const { showModalDetail } = usePokemon();
 
-  const handleShowDetailPokemon = (name: string) => {
-    showModalDetail(name);
+  const [ optionModal, setOptionModal ] = useState(false);
+  const [ pokemon, setPokemon ] = useState<IPokemonCardDetail>({} as IPokemonCardDetail);
+
+  const handleShowDetailPokemon = (pokemonDetail: IPokemonCardDetail) => {
+    setOptionModal(!optionModal);
+    setPokemon(pokemonDetail);
   }
-
+ 
   return (
     <S.Container>
 
-      <Modal />
+      <Modal visible={optionModal} close={setOptionModal} dataPoke={pokemon} />
 
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
-          <S.ImagePoke source={{uri: data.image}} />          
+          <S.ImagePoke source={{uri: data.images[0].photo}} />          
           <S.BoxFavorite>
           {data.favorite
             ? <AntDesign name="heart" size={24} color="red" />
@@ -38,14 +41,14 @@ const Cards = ({data}: any) => {
           <S.TextId>ID: {data.id}</S.TextId>
 
           <S.BoxInfoSpecialty>
-            {data.type && data.type.map((type: boolean, index: number) => {
+            {data.types && data.types.map((type: boolean, index: number) => {
               
               let verify = false;
               if(index % 2 !== 0) {
                 verify = true;
               }
               return (
-                <S.BoxSpecialty active={verify}>
+                <S.BoxSpecialty active={verify} key={index}>
                   <S.TextSpecialty active={verify}>{type}</S.TextSpecialty>
                 </S.BoxSpecialty>
               );              
@@ -55,7 +58,7 @@ const Cards = ({data}: any) => {
           <S.BoxButton>
             <Button 
               title="Ver detalhes" 
-              onPress={() => {handleShowDetailPokemon(data.name)}} 
+              onPress={() => {handleShowDetailPokemon(data)}} 
               font={theme.fonts.medium}
               fontSize={9}
               padding={8}

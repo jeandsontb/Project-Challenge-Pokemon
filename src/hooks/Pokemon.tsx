@@ -1,34 +1,29 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
-import { IPokemonCardDto, IPokemonCardSearchDto, IPokemonDetail } from '../Dtos/Pokemons';
-import { getDetailPokemon, getOnePokemon, listPokemon } from '../services/resources/poke';
+import { IPokemonCardDetail, IPokemonCardDto, IPokemonCardSearchDto } from '../Dtos/Pokemons';
+import { getCardPokemon, getOnePokemon, listPokemon } from '../services/resources/poke';
 
 interface PokemonProviderProps {
   children: ReactNode;
 }
 
 interface IContextData {
-  pokemonCard: IPokemonCardDto[];
+  pokemonCard: IPokemonCardDetail[];
   loading: boolean;
   dataSearchPokemon: IPokemonCardSearchDto;
-  visibleModal: boolean;
-  dataPokemon: IPokemonDetail;
   searchNewsPokemons: () => void;
   clearListPokemons: () => void;
   searchOnePokemon: (name: string) => void;
-  showModalDetail: (name: string) => void;
 } 
 
 const PokemonContext = createContext({} as IContextData);
 
 const PokemonProvider = ({children}: PokemonProviderProps) => {
 
-  const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDto[]>([]);
-  const [ dataSearchPokemon, setDataSearchPokemon ] = useState<IPokemonCardSearchDto>({} as IPokemonCardSearchDto)
-  const [ dataPokemon, setDataPokemon ] = useState<IPokemonDetail>({} as IPokemonDetail);
+  const [ pokemonCard, setPokemonCard ] = useState<IPokemonCardDetail[]>([]);
+  const [ dataSearchPokemon, setDataSearchPokemon ] = useState<IPokemonCardSearchDto>({} as IPokemonCardSearchDto);
   const [ loading, setLoading ] = useState(true);
-  const [ visibleModal, setVisibleModal ] = useState(false);
   const [ offset, setOffset ] = useState(0);
   const [ limit, setLimit ] = useState(20);
 
@@ -38,20 +33,43 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
   
   const getPokemonCard = async () => {
     try {
-      const insertPokemonList: IPokemonCardDto[] = [];
+      const insertPokemonList: IPokemonCardDetail[] = [];
       const loadPokemon = await listPokemon(limit, offset);
-      if(loadPokemon) {
-        loadPokemon.results.forEach(async (data: {name: string, url: string}) => {
-          const result = await getPokemonDataDetails(data);
-          insertPokemonList.push(result as IPokemonCardDto);
-
-            if(insertPokemonList.length === limit) {
-              setPokemonCard(insertPokemonList);
-              setLoading(false);
-              return;
-            }
-        });
-      } 
+        for(let i=0; i<loadPokemon.results.length; i++){
+          let id = loadPokemon.results[i].url.split('/')[6];
+          let pokemonData = await getCardPokemon(id);
+          let statsPoke = pokemonData.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
+            let obj = {
+              name: stat.stat.name,
+              base_stat: stat.base_stat
+            };
+            return obj;
+          });
+          let typesPokemonCards = pokemonData.types.map((types: { type: { name: string; }; }) => {
+            return types.type.name;
+          });
+          const stats: {name: string, base_stat: number}[] = await Promise.all(statsPoke);
+          const pokemonTypes: string[] = await Promise.all(typesPokemonCards);
+          let data = {
+            id: pokemonData.id,
+            name: pokemonData.name,        
+            images: [
+              {photo: pokemonData.sprites.front_default },
+              {photo: pokemonData.sprites.back_shiny },
+              {photo: pokemonData.sprites.front_shiny }
+            ],
+            height: pokemonData.height,
+            weight: pokemonData.weight,
+            types: pokemonTypes,
+            stats: stats,
+          }
+          insertPokemonList.push(data);
+        }      
+        if(insertPokemonList.length === 20) {
+          setLoading(false);
+          setPokemonCard(insertPokemonList);
+          return;
+        }
     } catch(err) {
       Alert.alert('Opsss!','Não foi possível realizar essa operação');
       return;
@@ -63,7 +81,7 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
       const pokemonData = await getOnePokemon(pokemon.name);
       if( pokemonData ) {  
         let pokemonTypes: string[] = [];
-        pokemonData.types.forEach((types: { type: { name: string; }; }) => {
+        pokemonData.types.map((types: { type: { name: string; }; }) => {
           pokemonTypes.push(types.type.name);
         });
         const objPokemon: IPokemonCardDto = {
@@ -104,57 +122,14 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
     return;
   }
 
-  const showModalDetail = async (name: string) => {
-    if(name === 'close') {
-        setVisibleModal(false);
-        return;
-    } 
-    
-    let data: IPokemonDetail = {} as IPokemonDetail;
-    const response = await getDetailPokemon(name);
-      
-    const stats: {name: string, base_stat: number}[] = [];
-    const type: string[] = [];
-    response.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
-      let obj = {
-        name: stat.stat.name,
-        base_stat: stat.base_stat
-      };
-      stats.push(obj);
-      return;
-    });
-
-    response.types.map((obj: { type: { name: string; }; }) => type.push(obj.type.name) );
-
-    data = {
-      id: response.id,
-      name: response.name,        
-      images: [
-        {photo: response.sprites.front_default },
-        {photo: response.sprites.back_shiny },
-        {photo: response.sprites.front_shiny }
-      ],
-      height: response.height,
-      weight: response.weight,
-      types: type,
-      stats: stats,
-    }
-    setDataPokemon(data);
-    setVisibleModal(true);
-    return;
-  }
-
   return (
     <PokemonContext.Provider value={{ 
       pokemonCard, 
       loading, 
       dataSearchPokemon,
-      visibleModal,
-      dataPokemon,
       searchOnePokemon,
       searchNewsPokemons, 
       clearListPokemons,
-      showModalDetail
     }} > 
       { children }
     </PokemonContext.Provider>

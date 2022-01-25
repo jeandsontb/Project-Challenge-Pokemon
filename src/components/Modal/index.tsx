@@ -3,21 +3,25 @@ import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
 import S from './styled';
-import { usePokemon } from '../../hooks/Pokemon';
 import { Button } from '../Button';
+import { IPokemonCardDetail } from '../../Dtos/Pokemons';
 
-const Modal = () => {
+interface IModalProps {
+  visible: boolean;
+  dataPoke: IPokemonCardDetail;
+  close: (close: boolean) => void;
+}
+
+const Modal = ({visible, close, dataPoke}: IModalProps) => {
   const theme = useTheme();
 
-  const { showModalDetail, visibleModal, dataPokemon } = usePokemon();
-
   const handleCloseModal = () => {
-    showModalDetail('close');
+    close(!visible);
   };  
 
   return (
     <S.Container
-      visible={visibleModal}
+      visible={visible}
       animationType="slide"
     >
       <S.BoxContent>
@@ -31,16 +35,16 @@ const Modal = () => {
           />
         </S.BoxHeader>
 
-        {Object.keys(dataPokemon).length > 0 &&
+        {Object.keys(dataPoke).length > 0 &&
           <>
             <S.BoxPokemon>
-              <S.TextName>{dataPokemon.name}</S.TextName>
+              <S.TextName>{dataPoke.name}</S.TextName>
               <S.BoxImagesPokemon>
                 <S.ScrollPokemon 
                   horizontal={true} 
                   showsHorizontalScrollIndicator={false}
                 >
-                  {dataPokemon.images.map((item, index) => (
+                  {dataPoke.images.map((item, index) => (
                     <S.BoxImage key={index} >
                       <S.ImagePokemon source={{uri: item.photo}} />
                     </S.BoxImage>
@@ -52,23 +56,23 @@ const Modal = () => {
 
             <S.BoxDetailPokemon>
               <S.TextHeight>
-                {dataPokemon.height > 100 
-                  ? dataPokemon.height * 0.01 + 'm'
-                  : dataPokemon.height + '0cm'
+                {dataPoke.height > 100 
+                  ? dataPoke.height * 0.01 + 'm'
+                  : dataPoke.height + '0cm'
                 } 
               </S.TextHeight>
-              <S.TextWeight>{dataPokemon.weight}kg</S.TextWeight>
+              <S.TextWeight>{dataPoke.weight}kg</S.TextWeight>
             </S.BoxDetailPokemon>
 
             <S.BoxTypeButtonPokemon>
-              {dataPokemon.types.map((item, index) => {
+              {dataPoke.types.map((item, index) => {
                 let status = false;
                 if(index % 2 === 0) {
                   status = true;
                 }
                 return (
                 <S.BoxTypePokemon key={index} backgroundColor={status}>
-                  <S.TextTitleType backgroundColor={status} >{dataPokemon.types}</S.TextTitleType>
+                  <S.TextTitleType backgroundColor={status} >{dataPoke.types}</S.TextTitleType>
                 </S.BoxTypePokemon>
                 );
               })}
@@ -78,7 +82,7 @@ const Modal = () => {
 
             <S.BoxStatistics>
               <S.BoxStatisticsPerfil>
-                {dataPokemon.stats.map((item, index) => (
+                {dataPoke.stats.map((item, index) => (
                   <S.BoxProgressBar key={index}>
                     <S.TextInfo>
                       {item.name === 'hp' ? 'HP' : item.name === 'attack' ? 'ATK' 

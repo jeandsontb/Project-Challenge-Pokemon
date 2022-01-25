@@ -19,7 +19,7 @@ export interface IPokemonCardSearchDto {
   favorite: boolean;
 };
 
-export interface IPokemonDetail {
+export interface IPokemonCardDetail {
   name: string;
   id: number;
   images: {
@@ -32,4 +32,4 @@ export interface IPokemonDetail {
     name: string;
     base_stat: number;
   }[];
-}
+}[];

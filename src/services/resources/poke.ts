@@ -14,6 +14,13 @@ const getOnePokemon = async (name: string) => {
   }
 }
 
+const getCardPokemon = async (id: number) => {
+  const { data } = await api.get(`/pokemon/${id}`);
+  if(data) {
+    return data;
+  }
+}
+
 const getDetailPokemon = async (name: string) => {
   const { data } = await api.get(`/pokemon/${name}`);
   if(data) {
@@ -21,4 +28,9 @@ const getDetailPokemon = async (name: string) => {
   }
 }
 
-export { listPokemon, getOnePokemon, getDetailPokemon };
+export { 
+  listPokemon, 
+  getOnePokemon, 
+  getDetailPokemon, 
+  getCardPokemon
+};

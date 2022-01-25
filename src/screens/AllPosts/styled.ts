@@ -1,6 +1,6 @@
 import styled, {css} from 'styled-components/native';
 import { FlatList, FlatListProps } from 'react-native';
-import { IPokemonCardDto, IPokemonsDto } from '../../Dtos/Pokemons';
+import { IPokemonCardDetail, IPokemonCardDto, IPokemonsDto } from '../../Dtos/Pokemons';
 
 export default {
   Container: styled.View`
@@ -18,7 +18,7 @@ export default {
     height: 70px;
   `,
   ListCards: styled(FlatList as new 
-    (props: FlatListProps<IPokemonCardDto>) => FlatList<IPokemonCardDto>).attrs({
+    (props: FlatListProps<IPokemonCardDetail>) => FlatList<IPokemonCardDetail>).attrs({
       showsVerticalScrollIndicator: false,
   })``,
   BoxLoadingActivity: styled.View`
