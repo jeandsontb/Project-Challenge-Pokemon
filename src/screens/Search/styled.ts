@@ -31,6 +31,17 @@ export default {
     flex: 1;
     margin-top: 50px;
   `,
+  BoxMessage: styled.View`
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+  `,
+  TextMessage: styled.Text`
+    font-family: ${({theme}) => theme.fonts.medium};
+    color: ${({theme}) => theme.colors.text};
+    font-size: 18px;
+  `,
   ScrollCards: styled.ScrollView`
     width: 100%;
     height: 100%;

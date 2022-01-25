@@ -8,42 +8,69 @@ import { Menu } from '../../components/Menu';
 import S from './styled';
 import { ButtonTheme } from '../../components/ButtonTheme';
 import { ButtonLogout } from '../../components/ButtonLogout';
-import { usePokemon } from '../../hooks/Pokemon';
 import { Cards } from '../../components/Cards';
+import { getOnePokemon } from '../../services/resources/poke';
+import { IPokemonCardDetail } from '../../Dtos/Pokemons';
 
 const Search = () => {
 
   const focused = useIsFocused();
   const theme = useTheme();
-  const { 
-    clearListPokemons, 
-    searchOnePokemon, 
-    dataSearchPokemon 
-  } = usePokemon();
   
-
+  const [ dataPokemon, setDataPokemon ] = useState<IPokemonCardDetail>({} as IPokemonCardDetail);
   const [ searchNamePokemon, setSearchNamePokemon ] = useState('');
-  const [ pokemon, setPokemon ] = useState({});
   const [ loading, setLoading ] = useState(false);
+  const [ pokeError, setPokeError ] = useState(false);
 
   useEffect(() => {
-    clearListPokemons();
-    setPokemon({});  
-  }, [focused]);
-
-  useEffect(() => {
-    setPokemon(dataSearchPokemon);
+    setDataPokemon({} as IPokemonCardDetail);
     setSearchNamePokemon('');
     setLoading(false);
-  }, [dataSearchPokemon]);
+    setPokeError(false);
+  }, [focused]);
 
-  const handleSubmitSearch = () => {
+  const handleSearchPokemon = async () => {
     setLoading(true);
-    setPokemon({});
-    searchOnePokemon(searchNamePokemon);
+    setPokeError(false);
+    const nameSearch = searchNamePokemon.toLowerCase();
+    const pokemonData = await getOnePokemon(nameSearch);
+
+    if(!pokemonData.error) {
+      let statsPoke = pokemonData.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
+        let obj = {
+          name: stat.stat.name,
+          base_stat: stat.base_stat
+        };
+        return obj;
+      });
+      let typesPokemonCards = pokemonData.types.map((types: { type: { name: string; }; }) => {
+        return types.type.name;
+      });
+      const stats: {name: string, base_stat: number}[] = await Promise.all(statsPoke);
+      const pokemonTypes: string[] = await Promise.all(typesPokemonCards);
+      let data = {
+        id: pokemonData.id,
+        name: pokemonData.name,        
+        images: [
+          {photo: pokemonData.sprites.front_default },
+          {photo: pokemonData.sprites.back_shiny },
+          {photo: pokemonData.sprites.front_shiny }
+        ],
+        height: pokemonData.height,
+        weight: pokemonData.weight,
+        types: pokemonTypes,
+        stats: stats,
+      }
+      setDataPokemon(data);
+      setLoading(false);
+      return;
+    }
+    setPokeError(true);
+    setDataPokemon({} as IPokemonCardDetail);
+    setLoading(false);
     return;
   }
-
+  
   return (
     <S.Container>
       <Menu screenActive='search' />
@@ -55,16 +82,22 @@ const Search = () => {
             value={searchNamePokemon}
             onChangeText={(e) => setSearchNamePokemon(e)}
             placeholderTextColor={theme.colors.border_search}
-            onSubmitEditing={handleSubmitSearch}
+            onSubmitEditing={handleSearchPokemon}
           />
-          <Entypo name="magnifying-glass" size={24} color="black" onPress={handleSubmitSearch} />
+          <Entypo name="magnifying-glass" size={24} color="black" onPress={handleSearchPokemon} />
         </S.BoxSearch> 
 
         <S.BoxCards>
           {loading && <ActivityIndicator size='large' color={theme.colors.text} />  }
 
-          {!loading && Object.keys(pokemon).length > 0 &&
-            <Cards data={pokemon} />
+          {!loading && Object.keys(dataPokemon).length > 0 &&
+            <Cards data={dataPokemon} />
+          }
+
+          {pokeError && 
+            <S.BoxMessage>
+              <S.TextMessage>Pokémon não encontrado</S.TextMessage>
+            </S.BoxMessage>
           }
         </S.BoxCards>
       </S.BoxContent>

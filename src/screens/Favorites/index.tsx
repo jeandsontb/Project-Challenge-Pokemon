@@ -15,11 +15,10 @@ const Favorites = () => {
 
   const theme = useTheme();
   const focused = useIsFocused();
-  const { clearListPokemons } = usePokemon();
   const [ indicator, setIndicator ] = useState<number>(1);
 
   useEffect(() => {
-    clearListPokemons();
+    
   }, [focused]);
 
   return (

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'; 
 import { ActivityIndicator, Alert } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 
 import { ButtonLogout } from '../../components/ButtonLogout';

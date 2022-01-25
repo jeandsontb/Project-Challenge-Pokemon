@@ -7,10 +7,12 @@ const listPokemon = async (limit: number, offset: number) => {
   }
 }
 
-const getOnePokemon = async (name: string) => {
-  const { data } = await api.get(`/pokemon/${name}`);
-  if(data) {
+const getOnePokemon = async (name: string) => {  
+  try {
+    const { data } = await api.get(`/pokemon/${name}`);
     return data;
+  } catch(error) {
+    return {error: 'Pokemón não encontrado!'};
   }
 }
 
