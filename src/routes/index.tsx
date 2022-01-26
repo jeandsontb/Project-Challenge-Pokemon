@@ -6,15 +6,17 @@ import { AppHome } from "./home.routes";
 import { AppLogin } from "./app.routes";
 import { useAuth } from "../hooks/Auth";
 import theme from "../styles/theme";
+import themeNight from '../styles/themeNight';
 import { useThemeFolks } from '../hooks/Theme';
 
 const Routes = () => {
 
   const { token } = useAuth();
+  const { status } = useThemeFolks();
 
   return (
     <NavigationContainer>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={status ? themeNight : theme}>
         { token ? <AppHome /> : <AppLogin /> }
       </ThemeProvider>
     </NavigationContainer>

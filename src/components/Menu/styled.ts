@@ -35,6 +35,7 @@ export default {
     border-bottom-width: ${({active}) => active === 'favorites' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
+    color: ${({theme}) => theme.colors.text};
   `,
   BoxIndicator: styled.View`
     background-color: ${({theme}) => theme.colors.indicator};
@@ -59,6 +60,7 @@ export default {
     border-bottom-width: ${({active}) => active === 'search' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
+    color: ${({theme}) => theme.colors.text};
   `,
   ButtonAllPosts: styled(RectButton)`
     padding: 15px;
@@ -69,5 +71,6 @@ export default {
     border-bottom-width: ${({active}) => active === 'all' ? 2 : 0}px;
     border-bottom-color: ${({theme}) => theme.colors.text};
     font-size: ${RFValue(12)}px;
+    color: ${({theme}) => theme.colors.text};
   `,
 }
