@@ -16,7 +16,6 @@ const Cards = ({data}: any) => {
 
   const [ optionModal, setOptionModal ] = useState(false);
   const [ pokemon, setPokemon ] = useState<IPokemonCardDetail>({} as IPokemonCardDetail);
-  const [ favorite, setFavorite ] = useState(false);
 
   const handleShowDetailPokemon = (pokemonDetail: IPokemonCardDetail) => {
     setOptionModal(!optionModal);
@@ -26,7 +25,6 @@ const Cards = ({data}: any) => {
   const handleFavoritePokemon = (data: IPokemonCardDetail) => {
     dataFavorites({data});
     data.favorite = !data.favorite;
-    setFavorite(!favorite);
   }
 
   return (

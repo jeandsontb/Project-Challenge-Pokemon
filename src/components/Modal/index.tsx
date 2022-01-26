@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components';
 import S from './styled';
 import { Button } from '../Button';
 import { IPokemonCardDetail } from '../../Dtos/Pokemons';
+import { usePokemon } from '../../hooks/Pokemon';
 
 interface IModalProps {
   visible: boolean;
@@ -14,10 +15,17 @@ interface IModalProps {
 
 const Modal = ({visible, close, dataPoke}: IModalProps) => {
   const theme = useTheme();
+  const { dataFavorites } = usePokemon();
 
   const handleCloseModal = () => {
     close(!visible);
   };  
+
+  const handleFavoritePokemon = (data: IPokemonCardDetail) => {
+    dataFavorites({data});
+    dataPoke.favorite = !data.favorite;
+    close(!visible);
+  }
 
   return (
     <S.Container
@@ -103,8 +111,8 @@ const Modal = ({visible, close, dataPoke}: IModalProps) => {
               </S.BoxStatisticsPerfil>
 
               <Button 
-                title="Adicionar aos favoritos"
-                onPress={() => {}}
+                title={dataPoke.favorite ? "Retirar dos favoritos" : "Adicionar aos favoritos"}
+                onPress={() => handleFavoritePokemon(dataPoke)}
                 font={theme.fonts.medium}
                 fontSize={12}
               />
