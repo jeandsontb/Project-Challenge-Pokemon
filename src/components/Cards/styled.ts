@@ -12,7 +12,6 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
     margin-bottom: 30px;
-
   `,
   BoxCard: styled.View`
     width: 154px;

@@ -1,6 +1,6 @@
-import styled, {css} from 'styled-components/native';
+import styled from 'styled-components/native';
 import { FlatList, FlatListProps } from 'react-native';
-import { IPokemonCardDetail, IPokemonCardDto, IPokemonsDto } from '../../Dtos/Pokemons';
+import { IPokemonCardDetail } from '../../Dtos/Pokemons';
 
 export default {
   Container: styled.View`

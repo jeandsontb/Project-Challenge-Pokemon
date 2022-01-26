@@ -34,4 +34,14 @@ export default {
   BoxButtonAll: styled.View`
     padding: 32px 65px 0px 65px;
   `,
+  BoxFavoritesPokemons: styled.View`
+    padding: 40px 0px 60px 0px; 
+    flex: 1;
+  `,
+  ScrollFavoritesPokemons: styled.FlatList``,
+  TextTitleFavorites: styled.Text`
+    font-size: 16px;
+    font-family: ${({theme}) => theme.fonts.regular};
+    text-align: center;
+  `,
 }

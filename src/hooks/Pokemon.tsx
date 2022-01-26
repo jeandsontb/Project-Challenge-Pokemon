@@ -30,7 +30,6 @@ const PokemonProvider = ({children}: PokemonProviderProps) => {
         return;
       }
     }
-
     populatePokemonFavorite();
   }, []);
   
