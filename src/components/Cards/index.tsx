@@ -6,33 +6,40 @@ import S from './styled';
 import { Button } from '../Button';
 import { Modal } from '../Modal';
 import { IPokemonCardDetail } from '../../Dtos/Pokemons';
+import { usePokemon } from '../../hooks/Pokemon';
 
 const Cards = ({data}: any) => {
 
   const theme = useTheme();
+  const { dataFavorites } = usePokemon();
+  
 
   const [ optionModal, setOptionModal ] = useState(false);
   const [ pokemon, setPokemon ] = useState<IPokemonCardDetail>({} as IPokemonCardDetail);
+  const [ favorite, setFavorite ] = useState(false);
 
   const handleShowDetailPokemon = (pokemonDetail: IPokemonCardDetail) => {
     setOptionModal(!optionModal);
     setPokemon(pokemonDetail);
   }
- 
+
+  const handleFavoritePokemon = (data: IPokemonCardDetail) => {
+    dataFavorites({data});
+    data.favorite = !data.favorite;
+    setFavorite(!favorite);
+  }
+
   return (
     <S.Container>
-
       <Modal visible={optionModal} close={setOptionModal} dataPoke={pokemon} />
-
       <S.BoxCard style={{elevation: 5}}>
         <S.BoxImagePoke>
           <S.ImagePoke source={{uri: data.images[0].photo}} />          
-          <S.BoxFavorite>
+          <S.BoxFavorite onPress={() => handleFavoritePokemon(data)}>
           {data.favorite
             ? <AntDesign name="heart" size={24} color="red" />
             : <AntDesign name="hearto" size={24} color="black" />
-          }          
-          
+          } 
           </S.BoxFavorite>
         </S.BoxImagePoke>
 

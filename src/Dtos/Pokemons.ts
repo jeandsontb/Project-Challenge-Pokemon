@@ -25,6 +25,7 @@ export interface IPokemonCardDetail {
   images: {
     photo: string;
   }[];
+  favorite: boolean;
   height: number;
   weight: number;
   types: string[];

@@ -32,7 +32,7 @@ export default {
     width: 72px;
     height: 76px;
   `,
-  BoxFavorite: styled.View`
+  BoxFavorite: styled.TouchableOpacity`
     position: absolute;
     right: 9px;
     top: 12px;

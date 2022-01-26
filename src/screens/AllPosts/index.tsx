@@ -9,12 +9,14 @@ import { Cards } from '../../components/Cards';
 import { useTheme } from 'styled-components';
 import { Menu } from '../../components/Menu';
 import { IPokemonCardDetail } from '../../Dtos/Pokemons';
+import { usePokemon } from '../../hooks/Pokemon';
 
 import S from './styled';
 import { getCardPokemon, listPokemon } from '../../services/resources/poke';
 
 const AllPosts = () => {
   const theme = useTheme();
+  const { pokemonFavoriteStorage } = usePokemon();
 
   const [dataPokemon, setDataPokemon] = useState<IPokemonCardDetail[]>([]);
   const [filterTypePokemon, setFilterTypePokemon] = useState<IPokemonCardDetail[]>([])
@@ -35,6 +37,7 @@ const AllPosts = () => {
         for(let i=0; i<loadPokemon.results.length; i++){
           let id = loadPokemon.results[i].url.split('/')[6];
           let pokemonData = await getCardPokemon(id);
+          let verifyFavorite = pokemonFavoriteStorage.find((data) => data.id === pokemonData.id);
           let statsPoke = pokemonData.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
             let obj = {
               name: stat.stat.name,
@@ -55,6 +58,7 @@ const AllPosts = () => {
               {photo: pokemonData.sprites.back_shiny },
               {photo: pokemonData.sprites.front_shiny }
             ],
+            favorite: verifyFavorite === undefined ? false : true,
             height: pokemonData.height,
             weight: pokemonData.weight,
             types: pokemonTypes,

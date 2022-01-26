@@ -11,11 +11,13 @@ import { ButtonLogout } from '../../components/ButtonLogout';
 import { Cards } from '../../components/Cards';
 import { getOnePokemon } from '../../services/resources/poke';
 import { IPokemonCardDetail } from '../../Dtos/Pokemons';
+import { usePokemon } from '../../hooks/Pokemon';
 
 const Search = () => {
 
   const focused = useIsFocused();
   const theme = useTheme();
+  const { pokemonFavoriteStorage } = usePokemon();
   
   const [ dataPokemon, setDataPokemon ] = useState<IPokemonCardDetail>({} as IPokemonCardDetail);
   const [ searchNamePokemon, setSearchNamePokemon ] = useState('');
@@ -36,6 +38,7 @@ const Search = () => {
     const pokemonData = await getOnePokemon(nameSearch);
 
     if(!pokemonData.error) {
+      let verifyFavorite = pokemonFavoriteStorage.find((data) => data.id === pokemonData.id);
       let statsPoke = pokemonData.stats.map((stat: { stat: { name: string; }; base_stat: number; }) => {
         let obj = {
           name: stat.stat.name,
@@ -45,7 +48,7 @@ const Search = () => {
       });
       let typesPokemonCards = pokemonData.types.map((types: { type: { name: string; }; }) => {
         return types.type.name;
-      });
+      });      
       const stats: {name: string, base_stat: number}[] = await Promise.all(statsPoke);
       const pokemonTypes: string[] = await Promise.all(typesPokemonCards);
       let data = {
@@ -56,6 +59,7 @@ const Search = () => {
           {photo: pokemonData.sprites.back_shiny },
           {photo: pokemonData.sprites.front_shiny }
         ],
+        favorite: verifyFavorite === undefined ? false : true,
         height: pokemonData.height,
         weight: pokemonData.weight,
         types: pokemonTypes,
